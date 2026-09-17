@@ -1,0 +1,257 @@
+.nspay-root {
+  --nspay-green: #239a68;
+  --nspay-green-dark: #177a51;
+  --nspay-green-soft: #eaf7f1;
+  --nspay-text: #2f373a;
+  --nspay-muted: #788286;
+  --nspay-border: #e1e6e8;
+  --nspay-amber: #d18a12;
+  --nspay-amber-soft: #fff6df;
+  background: #f5f6f8;
+  color: var(--nspay-text);
+}
+
+.nspay-root *,
+.nspay-root *::before,
+.nspay-root *::after { box-sizing: border-box; }
+
+.nspay-main { min-width: 0; overflow-x: hidden; padding: 18px 24px 26px; }
+.nspay-header { min-height: 52px; margin-bottom: 18px; }
+.nspay-header .nsd-bell svg { width: 20px; height: 20px; }
+.nspay-header .nsd-user-chevron svg { width: 16px; height: 16px; }
+.nspay-header .nsd-hamburger svg { width: 22px; height: 22px; }
+
+.nspay-card {
+  min-width: 0;
+  margin-bottom: 14px;
+  border: 1px solid var(--nspay-border);
+  border-radius: 13px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(29, 39, 43, 0.035);
+  padding: 16px 18px;
+}
+
+.nspay-section-heading {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 10px;
+}
+
+.nspay-section-heading > div { min-width: 0; display: flex; align-items: center; gap: 9px; }
+.nspay-section-heading h2 { margin: 0; color: #263034; font-size: 15.5px; font-weight: 700; line-height: 21px; }
+.nspay-section-heading > button { border: 0; background: transparent; padding: 3px 0; color: var(--nspay-green-dark); font: inherit; font-size: 11.5px; font-weight: 650; cursor: pointer; white-space: nowrap; }
+.nspay-section-heading > button:hover,
+.nspay-section-heading > button:focus-visible { color: var(--nspay-green); text-decoration: underline; }
+.nspay-section-icon { width: 24px; height: 24px; display: inline-flex; color: var(--nspay-green); flex: 0 0 auto; }
+.nspay-section-icon svg { width: 100%; height: 100%; }
+
+.nspay-training-card { padding-bottom: 17px; }
+.nspay-training-content { display: grid; grid-template-columns: minmax(280px, 1.25fr) minmax(440px, 1.5fr); grid-template-rows: auto auto; align-items: center; gap: 8px 26px; }
+.nspay-course-summary { grid-row: 1 / span 2; display: flex; align-items: center; gap: 15px; min-width: 0; }
+.nspay-course-icon { width: 68px; height: 68px; display: inline-flex; align-items: center; justify-content: center; border: 2px solid #d8eee5; border-radius: 50%; background: #fbfefc; color: var(--nspay-green); flex: 0 0 auto; }
+.nspay-course-icon svg { width: 36px; height: 36px; }
+.nspay-course-summary > div { min-width: 0; }
+.nspay-course-summary h3 { margin: 0; color: #2c3539; font-size: 14px; font-weight: 700; line-height: 20px; }
+.nspay-course-summary h3 small { color: #566065; font-size: 11px; font-weight: 500; }
+.nspay-course-summary p { margin: 4px 0 9px; color: #4f595d; font-size: 12px; line-height: 16px; }
+.nspay-course-summary > div > span { display: inline-flex; min-height: 23px; align-items: center; border-radius: 6px; background: #f1f3f4; padding: 4px 7px; color: #657075; font-size: 10.5px; line-height: 15px; }
+
+.nspay-financial-summary { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: stretch; }
+.nspay-financial-summary > div { min-width: 0; min-height: 68px; display: flex; flex-direction: column; justify-content: center; border-left: 1px solid #e6e9ea; padding: 9px 18px; }
+.nspay-financial-summary span { color: #697377; font-size: 10.5px; line-height: 15px; }
+.nspay-financial-summary strong { margin-top: 4px; color: #253034; font-size: 20px; font-weight: 700; line-height: 26px; white-space: nowrap; }
+.nspay-financial-summary .is-paid strong { color: var(--nspay-green); }
+.nspay-financial-summary .is-remaining { border: 0; border-radius: 10px; background: var(--nspay-green-soft); text-align: center; }
+.nspay-financial-summary .is-remaining span { color: var(--nspay-green-dark); font-weight: 650; }
+.nspay-financial-summary .is-remaining strong { color: var(--nspay-green-dark); }
+
+.nspay-primary-action { grid-column: 2; justify-self: end; width: min(100%, 250px); height: 37px; display: inline-flex; align-items: center; justify-content: center; gap: 9px; border: 0; border-radius: 7px; background: var(--nspay-green); color: #fff; font: inherit; font-size: 12px; font-weight: 650; cursor: pointer; box-shadow: 0 4px 11px rgba(35, 154, 104, 0.16); transition: background 0.15s ease, transform 0.15s ease; }
+.nspay-primary-action svg { width: 18px; height: 18px; }
+.nspay-primary-action:hover,
+.nspay-primary-action:focus-visible { background: var(--nspay-green-dark); }
+.nspay-primary-action:active { transform: translateY(1px); }
+
+.nspay-table-wrap { width: 100%; overflow-x: auto; }
+.nspay-table { width: 100%; border-collapse: collapse; table-layout: fixed; color: #303a3e; font-size: 11.5px; }
+.nspay-table th { border-bottom: 1px solid #e8ebec; padding: 7px 5px 8px; color: #697377; font-size: 10.5px; font-weight: 500; line-height: 15px; text-align: left; }
+.nspay-table td { height: 52px; border-bottom: 1px solid #e8ebec; padding: 7px 5px; vertical-align: middle; }
+.nspay-table tbody tr:last-child td { border-bottom: 0; }
+.nspay-table td strong,
+.nspay-table td small { display: block; }
+.nspay-table td strong { color: #333d41; font-size: 11.5px; font-weight: 650; line-height: 16px; }
+.nspay-table td small { margin-top: 1px; color: #7a8488; font-size: 10.5px; line-height: 14px; }
+.nspay-upcoming-table th:nth-child(1), .nspay-upcoming-table td:nth-child(1) { width: 20%; }
+.nspay-upcoming-table th:nth-child(2), .nspay-upcoming-table td:nth-child(2) { width: 37%; }
+.nspay-upcoming-table th:nth-child(3), .nspay-upcoming-table td:nth-child(3) { width: 20%; }
+.nspay-upcoming-table th:nth-child(4), .nspay-upcoming-table td:nth-child(4) { width: 18%; }
+.nspay-upcoming-table th:nth-child(5), .nspay-upcoming-table td:nth-child(5) { width: 5%; }
+.nspay-history-table th:nth-child(1), .nspay-history-table td:nth-child(1) { width: 15%; }
+.nspay-history-table th:nth-child(2), .nspay-history-table td:nth-child(2) { width: 24%; }
+.nspay-history-table th:nth-child(3), .nspay-history-table td:nth-child(3) { width: 14%; }
+.nspay-history-table th:nth-child(4), .nspay-history-table td:nth-child(4) { width: 25%; }
+.nspay-history-table th:nth-child(5), .nspay-history-table td:nth-child(5) { width: 13%; }
+.nspay-history-table th:nth-child(6), .nspay-history-table td:nth-child(6) { width: 9%; text-align: center; }
+.nspay-date-cell,
+.nspay-method-cell { display: inline-flex; align-items: center; gap: 9px; }
+.nspay-date-cell > svg,
+.nspay-method-cell > svg { width: 17px; height: 17px; color: #596469; flex: 0 0 auto; }
+.nspay-method-cell > span { display: flex; flex-direction: column; }
+.nspay-row-action,
+.nspay-download-button { width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 7px; background: transparent; padding: 0; color: #606b70; cursor: pointer; }
+.nspay-row-action svg,
+.nspay-download-button svg { width: 16px; height: 16px; }
+.nspay-row-action:hover,
+.nspay-row-action:focus-visible,
+.nspay-download-button:hover,
+.nspay-download-button:focus-visible { background: var(--nspay-green-soft); color: var(--nspay-green); }
+.nspay-status { display: inline-flex; min-height: 21px; align-items: center; border-radius: 20px; padding: 3px 10px; font-size: 10px; font-weight: 650; line-height: 14px; white-space: nowrap; }
+.nspay-status--upcoming { background: var(--nspay-amber-soft); color: var(--nspay-amber); }
+.nspay-status--paid { background: var(--nspay-green-soft); color: var(--nspay-green-dark); }
+
+.nspay-invoice-shell { position: relative; }
+.nspay-invoice-track { min-width: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; overflow-x: auto; scrollbar-width: none; scroll-snap-type: x proximity; }
+.nspay-invoice-track::-webkit-scrollbar { display: none; }
+.nspay-invoice { min-width: 0; min-height: 158px; display: flex; flex-direction: column; border: 1px solid #e3e7e9; border-radius: 9px; background: #fff; padding: 11px 12px; scroll-snap-align: start; }
+.nspay-invoice-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+.nspay-invoice-top > span { width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center; border-radius: 7px; background: var(--nspay-green-soft); color: var(--nspay-green); }
+.nspay-invoice-top > span svg { width: 17px; height: 17px; }
+.nspay-invoice-top em { border-radius: 20px; background: var(--nspay-green-soft); padding: 3px 7px; color: var(--nspay-green-dark); font-size: 9px; font-style: normal; line-height: 13px; }
+.nspay-invoice h3 { margin: 0; overflow: hidden; color: #303a3e; font-size: 11px; font-weight: 650; line-height: 16px; text-overflow: ellipsis; white-space: nowrap; }
+.nspay-invoice p { margin: 3px 0; color: #7a8488; font-size: 10.5px; line-height: 14px; }
+.nspay-invoice > strong { color: #303a3e; font-size: 11.5px; line-height: 16px; }
+.nspay-invoice > button { display: inline-flex; align-items: center; gap: 7px; margin-top: auto; border: 0; border-top: 1px solid #e8ebec; background: transparent; padding: 9px 0 0; color: var(--nspay-green-dark); font: inherit; font-size: 10.5px; font-weight: 650; cursor: pointer; }
+.nspay-invoice > button svg { width: 15px; height: 15px; }
+.nspay-invoice > button:hover,
+.nspay-invoice > button:focus-visible { color: var(--nspay-green); text-decoration: underline; }
+.nspay-invoice-next { position: absolute; top: 50%; right: -13px; width: 31px; height: 31px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid #dfe4e6; border-radius: 50%; background: #fff; color: #687277; cursor: pointer; box-shadow: 0 2px 7px rgba(31, 41, 45, 0.09); transform: translateY(-50%); }
+.nspay-invoice-next svg { width: 15px; height: 15px; }
+.nspay-invoice-next:hover,
+.nspay-invoice-next:focus-visible { border-color: var(--nspay-green); color: var(--nspay-green); }
+
+.nspay-methods-heading { align-items: center; }
+.nspay-methods-heading > button.nspay-add-method { height: 32px; display: inline-flex; align-items: center; gap: 7px; border: 1px solid var(--nspay-green); border-radius: 7px; background: #fff; padding: 0 13px; color: var(--nspay-green-dark); text-decoration: none; }
+.nspay-methods-heading > button.nspay-add-method:hover,
+.nspay-methods-heading > button.nspay-add-method:focus-visible { background: var(--nspay-green); color: #fff; text-decoration: none; }
+.nspay-add-method svg { width: 15px; height: 15px; }
+.nspay-method-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.nspay-method-card { position: relative; min-width: 0; min-height: 137px; display: flex; flex-direction: column; align-items: flex-start; border: 1px solid #e3e7e9; border-radius: 9px; background: #fff; padding: 12px; }
+.nspay-method-icon { width: 30px; height: 24px; display: inline-flex; align-items: center; color: var(--nspay-green); }
+.nspay-method-icon svg { width: 25px; height: 25px; }
+.nspay-method-icon--cash { color: #28a96f; }
+.nspay-method-icon--alma { width: 42px; }
+.nspay-alma-mark { color: #101823; font-size: 15px; font-weight: 800; line-height: 20px; text-decoration: underline 2px #f24f58; text-underline-offset: 3px; }
+.nspay-method-card h3 { margin: 8px 0 3px; color: #303a3e; font-size: 11.5px; font-weight: 700; line-height: 16px; }
+.nspay-method-card p { margin: 1px 0; color: #6f797d; font-size: 10.5px; line-height: 14px; }
+.nspay-default-badge { margin-top: auto; border-radius: 20px; background: var(--nspay-green-soft); padding: 3px 7px; color: var(--nspay-green-dark); font-size: 9px; line-height: 13px; }
+.nspay-method-link { margin-top: auto; border: 0; background: transparent; padding: 5px 0 0; color: var(--nspay-green-dark); font: inherit; font-size: 10.5px; font-weight: 650; cursor: pointer; }
+.nspay-method-link:hover,
+.nspay-method-link:focus-visible { color: var(--nspay-green); text-decoration: underline; }
+.nspay-method-menu-wrap { position: absolute; top: 7px; right: 6px; z-index: 2; }
+.nspay-more-button { width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 6px; background: transparent; color: #657075; cursor: pointer; }
+.nspay-more-button svg { width: 17px; height: 17px; }
+.nspay-more-button:hover,
+.nspay-more-button:focus-visible { background: #f2f4f5; color: #333d41; }
+.nspay-method-menu { position: absolute; top: 29px; right: 0; width: 150px; overflow: hidden; border: 1px solid #dfe4e6; border-radius: 8px; background: #fff; box-shadow: 0 9px 22px rgba(25, 35, 40, 0.16); }
+.nspay-method-menu button { width: 100%; border: 0; background: #fff; padding: 8px 10px; color: #455055; font: inherit; font-size: 10.5px; text-align: left; cursor: pointer; }
+.nspay-method-menu button:hover,
+.nspay-method-menu button:focus-visible { background: #f3f7f5; }
+.nspay-method-menu button:disabled { color: #9ba2a5; cursor: default; }
+.nspay-method-menu button.danger { color: #c34a53; }
+
+.nspay-contact-strip { min-height: 52px; display: flex; align-items: center; gap: 10px; border: 1px solid #dcefe7; border-radius: 11px; background: #eef8f4; padding: 9px 13px; }
+.nspay-contact-strip > span { width: 25px; height: 25px; display: inline-flex; color: var(--nspay-green); flex: 0 0 auto; }
+.nspay-contact-strip > span svg { width: 100%; height: 100%; }
+.nspay-contact-strip p { min-width: 0; flex: 1; margin: 0; color: #5f696d; font-size: 11.5px; line-height: 17px; }
+.nspay-contact-strip p strong { color: #303a3e; }
+.nspay-contact-strip > button { min-width: 128px; height: 32px; border: 1px solid var(--nspay-green); border-radius: 7px; background: #fff; color: var(--nspay-green-dark); font: inherit; font-size: 11px; font-weight: 650; cursor: pointer; }
+.nspay-contact-strip > button:hover,
+.nspay-contact-strip > button:focus-visible { background: var(--nspay-green); color: #fff; }
+
+.nspay-modal-backdrop { position: fixed; inset: 0; z-index: 500; display: flex; align-items: center; justify-content: center; padding: 20px; background: rgba(25, 34, 38, 0.54); backdrop-filter: blur(2px); }
+.nspay-modal { width: min(100%, 510px); max-height: min(88vh, 700px); overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.7); border-radius: 15px; outline: 0; background: #fff; box-shadow: 0 22px 60px rgba(18, 29, 33, 0.24); }
+.nspay-modal-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 17px 19px 14px; border-bottom: 1px solid var(--nspay-border); }
+.nspay-modal-header h2 { margin: 0; color: #263034; font-size: 17px; line-height: 23px; }
+.nspay-modal-header p { margin: 3px 0 0; color: #747d81; font-size: 11.5px; line-height: 16px; }
+.nspay-modal-header > button { width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 7px; background: #f3f5f5; color: #606a6e; cursor: pointer; flex: 0 0 auto; }
+.nspay-modal-header > button svg { width: 17px; height: 17px; }
+.nspay-modal-header > button:hover,
+.nspay-modal-header > button:focus-visible { background: #e9ecec; color: #30383c; }
+.nspay-modal-form { display: flex; flex-direction: column; }
+.nspay-form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 14px; padding: 16px 19px; }
+.nspay-form-grid label { min-width: 0; display: flex; flex-direction: column; gap: 5px; }
+.nspay-form-grid label > span { color: #444e52; font-size: 10.5px; font-weight: 650; line-height: 14px; }
+.nspay-form-grid input,
+.nspay-form-grid select { width: 100%; height: 37px; min-width: 0; border: 1px solid #d8dddf; border-radius: 7px; outline: none; background: #fff; padding: 0 10px; color: #343e42; font: inherit; font-size: 11.5px; }
+.nspay-form-grid input:focus,
+.nspay-form-grid select:focus { border-color: var(--nspay-green); box-shadow: 0 0 0 3px rgba(35, 154, 104, 0.12); }
+.nspay-form-error { margin: 0 19px 12px; border-radius: 7px; background: #fff0f1; padding: 8px 10px; color: #b8414b; font-size: 10.5px; line-height: 15px; }
+.nspay-modal-actions { display: flex; justify-content: flex-end; gap: 9px; border-top: 1px solid var(--nspay-border); padding: 12px 19px; }
+.nspay-modal-actions button { min-width: 96px; height: 35px; border: 1px solid #d5dadd; border-radius: 7px; background: #fff; color: #4f595d; font: inherit; font-size: 11.5px; font-weight: 650; cursor: pointer; }
+.nspay-modal-actions button:hover,
+.nspay-modal-actions button:focus-visible { background: #f5f7f7; }
+.nspay-modal-actions button.primary { border-color: var(--nspay-green); background: var(--nspay-green); color: #fff; }
+.nspay-modal-actions button.primary:hover,
+.nspay-modal-actions button.primary:focus-visible { background: var(--nspay-green-dark); }
+.nspay-modal-actions button.danger { border-color: #c94852; background: #c94852; color: #fff; }
+.nspay-payment-notice { display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: 13px; padding: 19px; }
+.nspay-payment-notice > span { width: 48px; height: 48px; display: inline-flex; align-items: center; justify-content: center; border-radius: 11px; background: var(--nspay-green-soft); color: var(--nspay-green); }
+.nspay-payment-notice > span svg { width: 24px; height: 24px; }
+.nspay-payment-notice small,
+.nspay-payment-notice strong { display: block; }
+.nspay-payment-notice small { color: #727c80; font-size: 10.5px; }
+.nspay-payment-notice strong { margin: 2px 0 5px; color: var(--nspay-green-dark); font-size: 20px; line-height: 25px; }
+.nspay-payment-notice p,
+.nspay-delete-confirm p { margin: 0; color: #626c70; font-size: 11.5px; line-height: 17px; }
+.nspay-delete-confirm { padding: 18px 19px; }
+
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; clip-path: inset(50%); }
+
+@media (max-width: 1200px) {
+  .nspay-training-content { grid-template-columns: minmax(250px, 0.95fr) minmax(430px, 1.35fr); gap-inline: 16px; }
+  .nspay-financial-summary > div { padding-inline: 12px; }
+  .nspay-method-grid,
+  .nspay-invoice-track { gap: 9px; }
+}
+
+@media (max-width: 1020px) {
+  .nspay-main { padding: 18px 16px 24px; }
+}
+
+@media (max-width: 840px) {
+  .nspay-training-content { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto; }
+  .nspay-course-summary { grid-row: auto; }
+  .nspay-primary-action { grid-column: 1; }
+  .nspay-invoice-track { grid-template-columns: repeat(4, minmax(205px, 1fr)); }
+  .nspay-method-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 700px) {
+  .nspay-header { min-height: 44px; margin-bottom: 14px; }
+
+  .nspay-table { min-width: 680px; }
+  .nspay-history-table { min-width: 790px; }
+  .nspay-financial-summary { grid-template-columns: repeat(3, minmax(145px, 1fr)); overflow-x: auto; }
+  .nspay-contact-strip { align-items: flex-start; flex-wrap: wrap; }
+  .nspay-contact-strip p { flex-basis: calc(100% - 40px); }
+  .nspay-contact-strip > button { margin-left: 35px; }
+}
+
+@media (max-width: 520px) {
+  .nspay-main { padding-inline: 12px; }
+  .nspay-card { padding: 14px 12px; }
+  .nspay-section-heading h2 { font-size: 14px; }
+  .nspay-course-icon { width: 58px; height: 58px; }
+  .nspay-course-icon svg { width: 30px; height: 30px; }
+  .nspay-method-grid { grid-template-columns: minmax(0, 1fr); }
+  .nspay-methods-heading { align-items: flex-start; flex-direction: column; }
+  .nspay-methods-heading > button.nspay-add-method { width: 100%; justify-content: center; }
+  .nspay-form-grid { grid-template-columns: minmax(0, 1fr); }
+  .nspay-modal-backdrop { padding: 12px; }
+  .nspay-modal { max-height: 92vh; overflow-y: auto; }
+  .nspay-modal-header,
+  .nspay-form-grid,
+  .nspay-modal-actions { padding-inline: 14px; }
+}
