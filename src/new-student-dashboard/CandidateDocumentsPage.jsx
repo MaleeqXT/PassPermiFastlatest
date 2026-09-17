@@ -1,5 +1,6 @@
-import { useMemo, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import http from "../helpers/http.jsx";
 import StudentSidebar from "./StudentSidebar.jsx";
 import StudentHeader from "./StudentHeader.jsx";
 import "./CandidateDashboard.css";
@@ -62,28 +63,16 @@ const UploadCloudIcon = () => (
 const TrashIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18M8 6V4h8v2M19 6l-1 15H6L5 6M10 11v5M14 11v5" /></svg>
 );
+const EyeIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" /><circle cx="12" cy="12" r="3" /></svg>
+);
+const InfoIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><path d="M12 16v-4M12 8h.01" /></svg>
+);
 const HeadsetIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 14v-2a8 8 0 0 1 16 0v2M4 14h3a2 2 0 0 1 2 2v3H6a2 2 0 0 1-2-2zM20 14h-3a2 2 0 0 0-2 2v3h3a2 2 0 0 0 2-2zM15 19c0 1.1-.9 2-2 2h-1" /></svg>
 );
 
-const SUMMARY_CARDS = [
-  { id: "all", icon: <FolderIcon />, tone: "purple", label: "Tous mes documents", value: "12", meta: "documents disponibles" },
-  { id: "valid", icon: <CheckCircleIcon />, tone: "green", label: "À jour", value: "8", meta: "documents à jour" },
-  { id: "pending", icon: <HourglassIcon />, tone: "amber", label: "En attente", value: "2", meta: "documents à fournir" },
-  { id: "expiring", icon: <ClockIcon />, tone: "green", label: "Expirant bientôt", value: "2", meta: "documents à renouveler" },
-];
-
-const DOCUMENTS = [
-  { id: 1, title: "Contrat de formation", category: "Administratif", type: "PDF", added: "28/05/2024", status: "À jour", tone: "green", icon: "file", iconTone: "green", downloadable: true },
-  { id: 2, title: "Pièce d'identité", category: "Administratif", type: "JPG", added: "20/05/2024", status: "À jour", tone: "green", icon: "identity", iconTone: "amber", downloadable: true },
-  { id: 3, title: "Visite médicale", category: "Médical", type: "PDF", added: "15/05/2024", status: "Expirant bientôt", tone: "amber", icon: "medical", iconTone: "purple", downloadable: true, warning: true },
-  { id: 4, title: "Livret d'apprentissage", category: "Pédagogique", type: "PDF", added: "10/05/2024", status: "À jour", tone: "green", icon: "book", iconTone: "green", downloadable: true },
-  { id: 5, title: "Attestation de participation (code)", category: "Examen", type: "PDF", added: "05/05/2024", status: "En attente", tone: "amber", icon: "exam", iconTone: "rose", downloadable: true },
-  { id: 6, title: "Attestation de fin de formation", category: "Pédagogique", type: "PDF", added: "—", status: "Non disponible", tone: "neutral", icon: "graduation", iconTone: "purple", downloadable: false },
-  { id: 7, title: "Justificatif de domicile", category: "Administratif", type: "PDF", added: "—", status: "En attente", tone: "amber", icon: "file", iconTone: "amber", downloadable: false },
-  { id: 8, title: "Certificat médical", category: "Médical", type: "PDF", added: "02/05/2024", status: "À jour", tone: "green", icon: "medical", iconTone: "green", downloadable: true },
-  { id: 9, title: "Convocation examen pratique", category: "Examen", type: "PDF", added: "30/05/2024", status: "À jour", tone: "green", icon: "exam", iconTone: "green", downloadable: true },
-];
 
 const TABS = [
   { label: "Tous", category: null },
@@ -91,13 +80,6 @@ const TABS = [
   { label: "Pédagogiques", category: "Pédagogique" },
   { label: "Médicaux", category: "Médical" },
   { label: "Examens", category: "Examen" },
-];
-
-const REQUIRED_DOCUMENTS = [
-  { id: 1, title: "Pièce d'identité", detail: "Document valide", state: "valid" },
-  { id: 2, title: "Photo d'identité", detail: "Document valide", state: "valid" },
-  { id: 3, title: "Justificatif de domicile", detail: "En attente de réception", state: "pending" },
-  { id: 4, title: "ASSR 2 / ASR", detail: "Document valide", state: "valid" },
 ];
 
 const DOCUMENT_ICONS = {
@@ -120,8 +102,22 @@ function parseDate(value) {
 }
 
 function formatFileSize(bytes) {
+  if (!bytes) return "—";
   if (bytes < 1024 * 1024) return `${Math.max(1, Math.round(bytes / 1024))} KB`;
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
+
+function normalizeCategory(category) {
+  const value = String(category ?? "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+  if (["administratif", "administrative"].includes(value)) return "Administratif";
+  if (["pedagogique", "pedagogical", "education"].includes(value)) return "Pédagogique";
+  if (["medical", "medicale"].includes(value)) return "Médical";
+  if (["examen", "exam", "examination"].includes(value)) return "Examen";
+  return null;
+}
+
+function statusPresentation(status) {
+  return ({ valid: ["À jour", "green"], pending: ["En attente", "amber"], expiring: ["Expirant bientôt", "amber"], expired: ["Expiré", "neutral"] })[status] ?? ["—", "neutral"];
 }
 
 function SummaryCard({ card }) {
@@ -133,21 +129,48 @@ function SummaryCard({ card }) {
   );
 }
 
-function DocumentRow({ document }) {
+function DocumentRow({ document, onDownload, onPreview, onInfo, onDelete, menuOpen, onToggleMenu }) {
+  const [statusLabel, tone] = statusPresentation(document.status);
   return (
-    <article className="nsdoc-document-row">
+    <article className={`nsdoc-document-row${menuOpen ? " is-menu-open" : ""}`}>
       <div className="nsdoc-document-main">
         <div className="nsdoc-document-identity">
           <span className={`nsdoc-document-icon nsdoc-tone-${document.iconTone}`}>{DOCUMENT_ICONS[document.icon]}</span>
           <div><strong>{document.title}</strong><span>{document.category}<i aria-hidden="true">•</i>{document.type}</span></div>
         </div>
-        <div className="nsdoc-added-date"><span>Ajouté le</span><strong>{document.added}</strong></div>
-        <span className={`nsdoc-status nsdoc-status--${document.tone}`}>{document.status}</span>
-        {document.downloadable ? <button type="button" className="nsdoc-icon-action nsdoc-download" title="Télécharger" aria-label={`Télécharger ${document.title}`}><DownloadIcon /></button> : <span className="nsdoc-action-placeholder" />}
-        <button type="button" className="nsdoc-icon-action nsdoc-more" title="Plus d'options" aria-label={`Plus d'options pour ${document.title}`}><MoreIcon /></button>
+        <div className="nsdoc-added-date"><span>Ajouté le</span><strong>{document.added_at}</strong></div>
+        <span className={`nsdoc-status nsdoc-status--${tone}`}>{statusLabel}</span>
+        {document.downloadable ? <button type="button" className="nsdoc-icon-action nsdoc-download" title="Télécharger" aria-label={`Télécharger ${document.title}`} onClick={() => onDownload(document)}><DownloadIcon /></button> : <span className="nsdoc-action-placeholder" />}
+        <div className="nsdoc-more-wrap">
+          <button type="button" className={`nsdoc-icon-action nsdoc-more${menuOpen ? " is-active" : ""}`} title="Plus d'options" aria-label={`Plus d'options pour ${document.title}`} onClick={() => onToggleMenu(document.id)}><MoreIcon /></button>
+          {menuOpen && <div className="nsdoc-action-menu" role="menu">
+            {document.downloadable && (
+              <button type="button" role="menuitem" onClick={() => onPreview(document)}>
+                <EyeIcon />
+                <span>Voir le document</span>
+              </button>
+            )}
+            {document.downloadable && (
+              <button type="button" role="menuitem" onClick={() => onDownload(document)}>
+                <DownloadIcon />
+                <span>Télécharger</span>
+              </button>
+            )}
+            <button type="button" role="menuitem" onClick={() => onInfo(document)}>
+              <InfoIcon />
+              <span>Informations</span>
+            </button>
+            {document.deletable && (
+              <button type="button" role="menuitem" className="is-danger" onClick={() => onDelete(document)}>
+                <TrashIcon />
+                <span>Supprimer</span>
+              </button>
+            )}
+          </div>}
+        </div>
       </div>
       {document.warning && (
-        <div className="nsdoc-expiry-warning"><span><WarningIcon /></span><p><strong>Expire le 15/06/2024</strong><i aria-hidden="true">•</i>Pensez à renouveler votre visite médicale.</p><button type="button">En savoir plus</button></div>
+        <div className="nsdoc-expiry-warning"><span><WarningIcon /></span><p><strong>Expire le {document.expiresAt}</strong><i aria-hidden="true">•</i>Pensez à renouveler ce document.</p></div>
       )}
     </article>
   );
@@ -155,6 +178,8 @@ function DocumentRow({ document }) {
 
 export default function CandidateDocumentsPage() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const previewStudentId = location.state?.fromCandidateProfile ? location.state.candidate?.student?.id : null;
   const fileInputRef = useRef(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("Tous");
@@ -162,27 +187,71 @@ export default function CandidateDocumentsPage() {
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [uploadError, setUploadError] = useState("");
   const [isDragging, setIsDragging] = useState(false);
+  const [documents, setDocuments] = useState([]);
+  const [requiredDocuments, setRequiredDocuments] = useState([]);
+  const [summary, setSummary] = useState({ total: 0, valid: 0, pending: 0, expiring: 0 });
+  const [loading, setLoading] = useState(true);
+  const [apiError, setApiError] = useState("");
+  const [isUploading, setIsUploading] = useState(false);
+  const [openMenuId, setOpenMenuId] = useState(null);
+  const [infoDocument, setInfoDocument] = useState(null);
+  const [deleteDocument, setDeleteDocument] = useState(null);
+  const [feedback, setFeedback] = useState("");
+  const documentListRef = useRef(null);
+
+  const loadDocuments = async () => {
+    setLoading(true);
+    setApiError("");
+    try {
+      const { data } = await http.get("/student/documents", { params: previewStudentId ? { student_id: previewStudentId } : undefined });
+      setDocuments((data?.documents ?? []).map((document) => ({ ...document, category: normalizeCategory(document.category) })));
+      setRequiredDocuments(data?.required_documents ?? []);
+      setSummary(data?.summary ?? { total: 0, valid: 0, pending: 0, expiring: 0 });
+    } catch (error) {
+      setApiError(error.response?.data?.message ?? "Impossible de charger vos documents. Veuillez réessayer.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => { loadDocuments(); }, []);
+  useEffect(() => {
+    const closeMenu = (event) => {
+      if (!event.target.closest(".nsdoc-more-wrap")) {
+        setOpenMenuId(null);
+      }
+    };
+    document.addEventListener("mousedown", closeMenu);
+    return () => document.removeEventListener("mousedown", closeMenu);
+  }, []);
+
+  const summaryCards = [
+    { id: "all", icon: <FolderIcon />, tone: "purple", label: "Tous mes documents", value: String(summary.total), meta: "documents disponibles" },
+    { id: "valid", icon: <CheckCircleIcon />, tone: "green", label: "À jour", value: String(summary.valid), meta: "documents à jour" },
+    { id: "pending", icon: <HourglassIcon />, tone: "amber", label: "En attente", value: String(summary.pending), meta: "documents à fournir" },
+    { id: "expiring", icon: <ClockIcon />, tone: "green", label: "Expirant bientôt", value: String(summary.expiring), meta: "documents à renouveler" },
+  ];
 
   const visibleDocuments = useMemo(() => {
     const selectedCategory = TABS.find((tab) => tab.label === activeTab)?.category;
-    const filtered = selectedCategory ? DOCUMENTS.filter((document) => document.category === selectedCategory) : DOCUMENTS;
+    const filtered = selectedCategory ? documents.filter((document) => document.category === selectedCategory) : documents;
 
     return [...filtered].sort((first, second) => {
       if (sortOrder === "name") return first.title.localeCompare(second.title, "fr");
-      const firstDate = parseDate(first.added);
-      const secondDate = parseDate(second.added);
+      const firstDate = parseDate(first.added_at);
+      const secondDate = parseDate(second.added_at);
       if (firstDate === null) return 1;
       if (secondDate === null) return -1;
       return sortOrder === "oldest" ? firstDate - secondDate : secondDate - firstDate;
     });
-  }, [activeTab, sortOrder]);
+  }, [activeTab, documents, sortOrder]);
 
   const handleSidebarNavigate = (path) => {
     setSidebarOpen(false);
     navigate(path);
   };
 
-  const addFiles = (fileList) => {
+  const addFiles = async (fileList) => {
     const files = Array.from(fileList ?? []);
     if (!files.length) return;
 
@@ -201,6 +270,7 @@ export default function CandidateDocumentsPage() {
       }
 
       validFiles.push({
+        file,
         id: `${file.name}-${file.lastModified}-${crypto.randomUUID()}`,
         name: file.name,
         size: formatFileSize(file.size),
@@ -208,8 +278,22 @@ export default function CandidateDocumentsPage() {
       });
     });
 
-    if (validFiles.length) setUploadedFiles((current) => [...current, ...validFiles]);
     setUploadError(nextError);
+    if (!validFiles.length) return;
+
+    setIsUploading(true);
+    try {
+      const body = new FormData();
+      if (previewStudentId) body.append("student_id", previewStudentId);
+      validFiles.forEach(({ file }) => body.append("files[]", file));
+      await http.post("/student/documents", body, { headers: { "Content-Type": "multipart/form-data" } });
+      setUploadedFiles((current) => [...current, ...validFiles.map(({ file, ...display }) => display)]);
+      await loadDocuments();
+    } catch (error) {
+      setUploadError(error.response?.data?.message ?? Object.values(error.response?.data?.errors ?? {}).flat()[0] ?? "L’importation a échoué. Veuillez réessayer.");
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   const handleFileChange = (event) => {
@@ -223,6 +307,41 @@ export default function CandidateDocumentsPage() {
     addFiles(event.dataTransfer.files);
   };
 
+  const handleDownload = async (document) => {
+    if (!document.download_url) return;
+    try {
+      const response = await http.get(document.download_url, { responseType: "blob", params: previewStudentId ? { student_id: previewStudentId } : undefined });
+      const url = URL.createObjectURL(response.data);
+      const link = window.document.createElement("a");
+      link.href = url;
+      link.download = document.title;
+      link.click();
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      setApiError(error.response?.data?.message ?? "Le téléchargement est indisponible.");
+    }
+  };
+
+  const handlePreview = async (document) => {
+    setOpenMenuId(null);
+    try {
+      const response = await http.get(document.download_url, { responseType: "blob", params: { ...(previewStudentId ? { student_id: previewStudentId } : {}), preview: 1 } });
+      const url = URL.createObjectURL(response.data);
+      window.open(url, "_blank", "noopener,noreferrer");
+      window.setTimeout(() => URL.revokeObjectURL(url), 60_000);
+    } catch (error) { setApiError(error.response?.data?.message ?? "L’aperçu est indisponible."); }
+  };
+
+  const handleDelete = async () => {
+    if (!deleteDocument) return;
+    try {
+      await http.delete(`/student/documents/${encodeURIComponent(deleteDocument.id)}`, { params: previewStudentId ? { student_id: previewStudentId } : undefined });
+      setFeedback("Document supprimé avec succès.");
+      setDeleteDocument(null);
+      await loadDocuments();
+    } catch (error) { setApiError(error.response?.data?.message ?? "La suppression a échoué."); setDeleteDocument(null); }
+  };
+
   return (
     <div className="nsd-root nsdoc-root">
       <StudentSidebar activePath="/student-documents" isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} onNavigate={handleSidebarNavigate} />
@@ -231,7 +350,7 @@ export default function CandidateDocumentsPage() {
         <StudentHeader className="nsdoc-header" headingClassName="nsdoc-page-heading" titleNode={<div className="nsdoc-title-row"><span className="nsdoc-title-icon"><FileTextIcon /></span><h1 className="nsd-greeting-title">Mes documents</h1></div>} subtitle="Retrouvez ici tous vos documents importants." onMenuOpen={() => setSidebarOpen(true)} />
 
         <section className="nsdoc-summary-grid" aria-label="Résumé des documents">
-          {SUMMARY_CARDS.map((card) => <SummaryCard key={card.id} card={card} />)}
+          {summaryCards.map((card) => <SummaryCard key={card.id} card={card} />)}
         </section>
 
         <div className="nsdoc-content-grid">
@@ -243,8 +362,11 @@ export default function CandidateDocumentsPage() {
               <label className="nsdoc-sort"><span>Trier par</span><select value={sortOrder} onChange={(event) => setSortOrder(event.target.value)} aria-label="Trier les documents"><option value="recent">Plus récent</option><option value="oldest">Plus ancien</option><option value="name">Nom A-Z</option></select><ChevronDownIcon /></label>
             </div>
 
-            <div className="nsdoc-document-list" role="tabpanel" aria-label={`Documents ${activeTab.toLowerCase()}`}>
-              {visibleDocuments.map((document) => <DocumentRow key={document.id} document={document} />)}
+            <div className="nsdoc-document-list" ref={documentListRef} role="tabpanel" aria-label={`Documents ${activeTab.toLowerCase()}`}>
+              {loading && <p>Chargement de vos documents…</p>}
+              {!loading && apiError && <p role="alert">{apiError}</p>}
+              {!loading && !apiError && !visibleDocuments.length && <p>Aucun document dans cette catégorie.</p>}
+              {!loading && !apiError && visibleDocuments.map((document) => <DocumentRow key={document.id} document={document} onDownload={handleDownload} onPreview={handlePreview} onInfo={(item) => { setInfoDocument(item); setOpenMenuId(null); }} onDelete={(item) => { setDeleteDocument(item); setOpenMenuId(null); }} menuOpen={openMenuId === document.id} onToggleMenu={(id) => setOpenMenuId((current) => current === id ? null : id)} />)}
             </div>
           </section>
 
@@ -253,7 +375,7 @@ export default function CandidateDocumentsPage() {
               <h2>Ajouter un document</h2>
               <div className={`nsdoc-upload-zone${isDragging ? " is-dragging" : ""}`} onDragEnter={(event) => { event.preventDefault(); setIsDragging(true); }} onDragOver={(event) => event.preventDefault()} onDragLeave={() => setIsDragging(false)} onDrop={handleDrop}>
                 <input ref={fileInputRef} type="file" accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png" multiple onChange={handleFileChange} aria-label="Choisir des documents à importer" />
-                <button type="button" onClick={() => fileInputRef.current?.click()}><span className="nsdoc-upload-icon"><UploadCloudIcon /></span><strong>Glissez-déposez votre fichier ici</strong><span>ou cliquez pour parcourir</span><small>PDF, JPG, PNG (max. 10 Mo)</small></button>
+                <button type="button" onClick={() => fileInputRef.current?.click()} disabled={isUploading}><span className="nsdoc-upload-icon"><UploadCloudIcon /></span><strong>{isUploading ? "Importation en cours…" : "Glissez-déposez votre fichier ici"}</strong><span>ou cliquez pour parcourir</span><small>PDF, JPG, PNG (max. 10 Mo)</small></button>
               </div>
               {uploadError && <p className="nsdoc-upload-error" role="alert">{uploadError}</p>}
               {uploadedFiles.length > 0 && (
@@ -267,7 +389,8 @@ export default function CandidateDocumentsPage() {
               <h2>Documents requis</h2>
               <p>Voici les documents demandés pour votre formation.</p>
               <div className="nsdoc-required-list">
-                {REQUIRED_DOCUMENTS.map((document) => <button key={document.id} type="button" className="nsdoc-required-row"><span className={`nsdoc-required-state nsdoc-required-state--${document.state}`}>{document.state === "valid" ? <CheckCircleIcon /> : <HourglassIcon />}</span><span><strong>{document.title}</strong><small>{document.detail}</small></span><ChevronRightIcon /></button>)}
+                {requiredDocuments.map((document) => <button key={document.id} type="button" className="nsdoc-required-row"><span className={`nsdoc-required-state nsdoc-required-state--${document.state}`}>{document.state === "valid" ? <CheckCircleIcon /> : <HourglassIcon />}</span><span><strong>{document.title}</strong><small>{document.detail}</small></span><ChevronRightIcon /></button>)}
+                {!loading && !requiredDocuments.length && <p>Aucun document requis n’est actuellement configuré.</p>}
               </div>
             </section>
 
@@ -278,6 +401,9 @@ export default function CandidateDocumentsPage() {
           </aside>
         </div>
       </main>
+      {feedback && <div className="nsdoc-feedback" role="status">{feedback}<button type="button" onClick={() => setFeedback("")}>×</button></div>}
+      {infoDocument && <div className="nsdoc-dialog-backdrop" role="presentation" onMouseDown={() => setInfoDocument(null)}><section className="nsdoc-dialog" role="dialog" aria-modal="true" aria-label="Informations du document" onMouseDown={(event) => event.stopPropagation()}><h2>Informations</h2><dl><dt>Nom</dt><dd>{infoDocument.title || "—"}</dd><dt>Catégorie</dt><dd>{infoDocument.category || "—"}</dd><dt>Type</dt><dd>{infoDocument.type || "—"}</dd><dt>Ajouté le</dt><dd>{infoDocument.added_at || "—"}</dd><dt>Statut</dt><dd>{statusPresentation(infoDocument.status)[0]}</dd>{infoDocument.expiresAt && <><dt>Expiration</dt><dd>{infoDocument.expiresAt}</dd></>}{infoDocument.size && <><dt>Taille</dt><dd>{formatFileSize(infoDocument.size)}</dd></>}</dl><button type="button" onClick={() => setInfoDocument(null)}>Fermer</button></section></div>}
+      {deleteDocument && <div className="nsdoc-dialog-backdrop" role="presentation" onMouseDown={() => setDeleteDocument(null)}><section className="nsdoc-dialog" role="dialog" aria-modal="true" aria-label="Confirmer la suppression" onMouseDown={(event) => event.stopPropagation()}><h2>Supprimer ce document ?</h2><p>Êtes-vous sûr de vouloir supprimer ce document ?</p><div className="nsdoc-dialog-actions"><button type="button" onClick={() => setDeleteDocument(null)}>Annuler</button><button type="button" className="is-danger" onClick={handleDelete}>Supprimer</button></div></section></div>}
     </div>
   );
 }

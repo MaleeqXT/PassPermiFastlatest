@@ -3,11 +3,7 @@ import axios from "axios";
 const http = axios.create({
   baseURL: `${import.meta.env.VITE_API_URL}/api`,
   withCredentials: true,
-  
-  // headers: {
-  //   'Accept': 'application/json',
-  //   'Content-Type': 'application/json',
-  // }
+  headers: { Accept: "application/json" },
 });
 
 // The backend issues a Sanctum token during login. Add it to every API call so

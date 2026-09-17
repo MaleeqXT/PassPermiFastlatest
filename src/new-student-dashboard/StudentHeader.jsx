@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { logoutUser } from "../redux/reducers/authReducer.jsx";
 import http from "../helpers/http.jsx";
 
@@ -47,12 +47,15 @@ function profileImageUrl(user) {
   return `${baseUrl}/storage/${value.replace(/^\/?storage\//, "")}`;
 }
 
-export function StudentUserMenu() {
+export function StudentUserMenu({ user: previewUser }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const wrapperRef = useRef(null);
   const [open, setOpen] = useState(false);
-  const user = useSelector((state) => state.auth?.user);
+  const authenticatedUser = useSelector((state) => state.auth?.user);
+  const connectedCandidate = location.state?.fromCandidateProfile ? location.state.candidate : null;
+  const user = previewUser || connectedCandidate || authenticatedUser;
   const name = fullName(user);
   const initials = name.split(/\s+/).filter(Boolean).slice(0, 2).map((part) => part[0]).join("").toUpperCase();
   const photo = profileImageUrl(user);
@@ -145,6 +148,7 @@ export default function StudentHeader({
   titleNode,
   subtitle,
   onMenuOpen,
+  user,
 }) {
   return (
     <header className={`nsd-header ${className}`.trim()}>
@@ -159,7 +163,7 @@ export default function StudentHeader({
 
       <div className="nsd-header-right">
         <StudentNotifications />
-        <StudentUserMenu />
+        <StudentUserMenu user={user} />
       </div>
     </header>
   );

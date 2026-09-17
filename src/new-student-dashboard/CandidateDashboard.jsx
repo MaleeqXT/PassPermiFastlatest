@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import StudentSidebar from "./StudentSidebar.jsx";
 import StudentHeader from "./StudentHeader.jsx";
@@ -143,10 +143,13 @@ export default function CandidateDashboard() {
   const [dashboardProgress, setDashboardProgress] = useState(null);
   const [progressLoading, setProgressLoading] = useState(true);
   const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.auth.user);
-  const firstName = currentUser?.first_name || currentUser?.name?.split(" ")[0] || "";
-  const fullName = [currentUser?.first_name, currentUser?.last_name].filter(Boolean).join(" ") || currentUser?.name || "Élève";
+  const connectedCandidate = location.state?.fromCandidateProfile ? location.state.candidate : null;
+  const displayUser = connectedCandidate || currentUser;
+  const firstName = displayUser?.first_name || displayUser?.name?.split(" ")[0] || "";
+  const fullName = [displayUser?.first_name, displayUser?.last_name].filter(Boolean).join(" ") || displayUser?.name || "Élève";
   const initials = fullName.split(/\s+/).filter(Boolean).map((part) => part[0]).join("").slice(0, 2).toUpperCase() || "É";
   const avatarPath = currentUser?.profile_photo_url || currentUser?.media;
   const avatarUrl = avatarPath && !/^https?:\/\//i.test(avatarPath)
@@ -214,7 +217,7 @@ export default function CandidateDashboard() {
 
       <main className="nsd-main">
         {/* ── Header ── */}
-        <StudentHeader className="nsd-dashboard-header" title={`Bonjour ${firstName || ""} 👋`} subtitle="Bienvenue dans votre espace élève." onMenuOpen={() => setSidebarOpen(true)} />
+        <StudentHeader className="nsd-dashboard-header" title={`Bonjour ${firstName || ""} 👋`} subtitle="Bienvenue dans votre espace élève." onMenuOpen={() => setSidebarOpen(true)} user={displayUser} />
 
         <div className="nsd-grid">
           {/* ── Overall progress ── */}

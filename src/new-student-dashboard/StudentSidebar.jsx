@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import "../Components/shared/Sidebar.css";
 import "./CandidateDashboard.css";
 import logo from "../assets/logo.webp";
@@ -65,8 +66,14 @@ const STUDENT_NAV = [
 export default function StudentSidebar({ activePath, onNavigate, onLogout, isOpen, onClose }) {
   const [collapsed, setCollapsed] = useState(false);
   const isMobile = useIsMobile();
+  const location = useLocation();
+  const navigate = useNavigate();
   const effectiveCollapsed = isMobile ? false : collapsed;
   const toggleLeft = effectiveCollapsed ? 62 : 246;
+  const goTo = (path) => {
+    onClose?.();
+    navigate(path, { state: location.state });
+  };
 
   return (
     <>
@@ -82,7 +89,7 @@ export default function StudentSidebar({ activePath, onNavigate, onLogout, isOpe
             <div
               key={entry.path}
               className={`nav-item ${activePath === entry.path ? "active" : ""}`}
-              onClick={() => onNavigate?.(entry.path)}
+              onClick={() => goTo(entry.path)}
               title={effectiveCollapsed ? entry.label : ""}
             >
               <span className="nav-icon">{entry.icon}</span>
@@ -100,7 +107,7 @@ export default function StudentSidebar({ activePath, onNavigate, onLogout, isOpe
                 <span className="nsd-help-title">Besoin d'aide ?</span>
               </div>
               <p className="nsd-help-text">Notre équipe est là pour vous accompagner.</p>
-              <button type="button" className="nsd-help-btn" onClick={() => onNavigate?.("/student-contact")}>Nous contacter</button>
+              <button type="button" className="nsd-help-btn" onClick={() => goTo("/student-contact")}>Nous contacter</button>
             </div>
           )}
 

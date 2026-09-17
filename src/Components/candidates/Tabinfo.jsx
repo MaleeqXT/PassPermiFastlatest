@@ -507,6 +507,10 @@ export default function TabInfo({
       const upload = new FormData();
       const document = providedDocuments.find((item) => item.id === targetDocId);
       upload.append("document_type", document?.type || "Document");
+      if (document?.path) {
+        upload.append("replace", "1");
+        upload.append("existing_path", document.path);
+      }
       upload.append("files[]", file);
       const response = await http.post(`/students/${user.student.id}/required-documents`, upload, {
         headers: { "Content-Type": "multipart/form-data" },
@@ -633,7 +637,7 @@ useEffect(() => {
     if (onConnect) {
       onConnect();
     } else {
-      navigate("/student-dashboard", {
+      navigate("/new-student-dashboard", {
         state: {
           fromCandidateProfile: true,
           candidate: user,

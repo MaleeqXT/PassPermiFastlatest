@@ -266,7 +266,7 @@ function canAccessPath(role, pathname, state) {
 
     // Dashboard previews are available only through their respective
     // candidate/monitor "Connecter" actions.
-    if (pathname === "/student-dashboard") {
+    if (pathname === "/student-dashboard" || NEW_STUDENT_DASHBOARD_PATHS.has(pathname)) {
       return currentRole === "secretary"
         ? Boolean(state?.fromSecretaryDashboard)
         : Boolean(state?.fromCandidateProfile);
