@@ -227,6 +227,14 @@ const LoginPage = () => {
                 </NavLink>
               </div>
 
+              {/* Register Student Link */}
+              <div className="loginpage-register-row">
+                <span className="loginpage-register-text">Pas encore de compte ?</span>
+                <NavLink to="/register-student" className="loginpage-register-link">
+                  S'inscrire
+                </NavLink>
+              </div>
+
               {/* Submit */}
               <button type="submit" className="loginpage-btn" disabled={loading}>
                 {loading ? "Connexion…" : "Se connecter"}

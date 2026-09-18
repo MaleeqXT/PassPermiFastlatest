@@ -1,0 +1,357 @@
+/* ════════════════════════════════════════════════════════════════════════
+   RegisterStudentForm — COMPLETE, SELF-CONTAINED STYLESHEET
+   Every class used by RegisterStudentForm.jsx lives in this one file.
+   You do NOT need StudentProfile.css alongside this — just import this
+   one file and the component will look exactly right in a new project.
+   ════════════════════════════════════════════════════════════════════════ */
+
+.sp-page {
+  width: 870px;
+  max-width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding-bottom: 24px;
+  font-family: "Inter", sans-serif;
+}
+
+/* ── Header ── */
+.rf-header {
+  text-align: center;
+  padding-bottom: 6px;
+}
+.rf-title {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: #111827;
+}
+.rf-subtitle {
+  margin: 8px 0 0;
+  font-size: 13px;
+  color: #6b7280;
+}
+.rf-link {
+  color: #2563eb;
+  font-weight: 600;
+  text-decoration: none;
+}
+.rf-link:hover {
+  text-decoration: underline;
+}
+
+/* ── Card containers (each section of the form) ── */
+.sp-form-card {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  background: #ffffff;
+  border: 1px solid #e5e7ef;
+  border-radius: 14px;
+  padding: 22px 24px 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.sp-section {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* ── Field layout ── */
+.sp-grid {
+  display: grid;
+  gap: 12px;
+}
+.sp-grid--two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.sp-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+.sp-label {
+  font-size: 12px;
+  color: #6b7280;
+  font-weight: 500;
+}
+.sp-required {
+  color: #ef4444;
+}
+
+/* ── Inputs, selects, textareas ── */
+.sp-input {
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 10px 13px;
+  font-size: 13px;
+  font-family: inherit;
+  color: #111827;
+  background: #fafafa;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+  appearance: none;
+  -webkit-appearance: none;
+}
+.sp-input:focus {
+  border-color: #2563eb;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08);
+}
+
+.sp-date-input {
+  cursor: pointer;
+}
+
+.sp-textarea {
+  min-height: 88px;
+  resize: vertical;
+}
+
+/* ── Password field with the show/hide eye button ── */
+.sp-password-wrap {
+  position: relative;
+  display: block;
+}
+.sp-password-input {
+  padding-right: 42px;
+}
+.sp-password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  border: none;
+  background: none;
+  color: #64748b;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+/* ── Field-level error text ── */
+.rf-error {
+  font-size: 12px;
+  color: #ef4444;
+  margin-top: 2px;
+}
+
+/* ── "Choose your city carefully" warning box ── */
+.rf-warning {
+  display: flex;
+  gap: 10px;
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin: 6px 0 14px;
+}
+.rf-warning-icon {
+  font-size: 16px;
+  line-height: 1.3;
+}
+.rf-warning-text {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: #92400e;
+}
+.rf-warning-text p {
+  margin: 0;
+}
+.rf-warning-title {
+  font-weight: 700;
+}
+.rf-warning-strong {
+  font-weight: 600;
+}
+
+/* ── Terms / required-fields note ── */
+.rf-terms {
+  margin-top: 6px;
+  font-size: 12.5px;
+  color: #6b7280;
+  line-height: 1.6;
+}
+.rf-terms p {
+  margin: 0 0 4px;
+}
+
+/* ── Sticky submit bar + button ── */
+.sp-save-bar {
+  position: sticky;
+  bottom: 0;
+  z-index: 3;
+  padding-top: 8px;
+  background: linear-gradient(
+    180deg,
+    rgba(244, 245, 247, 0) 0%,
+    rgba(244, 245, 247, 0.92) 38%,
+    rgba(244, 245, 247, 1) 100%
+  );
+}
+.sp-save-btn {
+  width: 100%;
+  min-height: 46px;
+  border: none;
+  border-radius: 12px;
+  background: #333333;
+  color: #fff;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.sp-save-btn:hover {
+  background: #1f2937;
+}
+.sp-save-btn:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+.sp-save-btn:disabled:hover {
+  background: #9ca3af;
+}
+
+/* ══════════════════════════════════════════
+   SUCCESS MODAL
+   Design: #333 header, white body, subtle
+   shadow, Inter font — matches the dashboard
+══════════════════════════════════════════ */
+
+.sp-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  animation: spFadeIn 0.16s ease;
+}
+@keyframes spFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.sp-modal {
+  background: #ffffff;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 380px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.14);
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+  animation: spSlideUp 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes spSlideUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.sp-modal-header {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 14px 20px;
+  background: #333333;
+  color: #ffffff;
+}
+.sp-modal-header-text {
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.sp-modal-body {
+  padding: 20px 20px 10px;
+}
+.sp-modal-msg {
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  color: #374151;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.sp-modal-footer {
+  padding: 12px 20px 20px;
+}
+.sp-modal-close-btn {
+  width: 100%;
+  height: 42px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background: #f9fafb;
+  color: #374151;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s;
+}
+.sp-modal-close-btn:hover {
+  background: #f3f4f6;
+  border-color: #d1d5db;
+}
+
+/* ── Responsive ── */
+@media (max-width: 800px) {
+  .sp-page {
+    gap: 14px;
+  }
+  .sp-grid--two {
+    grid-template-columns: 1fr;
+  }
+  .sp-form-card {
+    width: 100%;
+    padding: 18px 16px 16px;
+  }
+  .sp-save-bar {
+    padding-top: 6px;
+  }
+}
+
+@media (max-width: 560px) {
+  .rf-title {
+    font-size: 22px;
+  }
+  .sp-modal {
+    max-width: 100%;
+  }
+  .sp-modal-header,
+  .sp-modal-body,
+  .sp-modal-footer {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+.rf-hidden-file-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.rf-selected-file {
+  display: block;
+  margin-top: 6px;
+  color: #5f6b72;
+  font-size: 12px;
+}

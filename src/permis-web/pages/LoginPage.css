@@ -474,6 +474,33 @@
   color: #5a9c22;
 }
 
+/* Register prompt row */
+.loginpage-register-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  font-family: "Roboto", sans-serif;
+  font-size: 13px;
+  margin-top: -4px;
+}
+
+.loginpage-register-text {
+  color: #6b7280;
+}
+
+.loginpage-register-link {
+  font-weight: 700;
+  color: #69B52D;
+  text-decoration: none;
+  transition: color 0.18s, text-decoration 0.18s;
+}
+
+.loginpage-register-link:hover {
+  color: #5a9c22;
+  text-decoration: underline;
+}
+
 /* Submit button */
 .loginpage-btn {
   width: 100%;

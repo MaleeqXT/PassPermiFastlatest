@@ -38,6 +38,7 @@ import { CandidatesProvider } from "./Components/candidates/CandidatesContext.js
 import Candidates     from "./Components/candidates/Candidates.jsx";
 import CandidateForm  from "./Components/candidates/CandidateForm.jsx";
 import Info           from "./Components/candidates/Info.jsx";
+import AdminDocumentsPage from "./Components/candidates/AdminDocumentsPage.jsx";
 
 // ── Monitors (feature folder + context)
 import { MonitorsProvider } from "./Components/monitors/MonitorsContext.jsx";
@@ -116,6 +117,7 @@ import PW_CPFPage                  from "./permis-web/pages/CPFPage.jsx";
 import PW_CodePage                 from "./permis-web/pages/CodePage.jsx";
 import PW_LoginPage                from "./permis-web/pages/LoginPage.jsx";
 import CPFPositioningPage from "./permis-web/pages/CPFPositioningPage.jsx";
+import RegisterStudentForm from "./permis-web/pages/RegisterStudentForm.jsx";
 
 const PAGE_TITLES = {
   "/dashboard":                "Tableau de bord",
@@ -147,6 +149,7 @@ const PAGE_TITLES = {
   "/secretaries":              "Secrétaires",
   "/monitors":                 "Moniteurs",
   "/candidates":               "Candidats",
+  "/admin/documents":          "Documents des élèves",
   "/skills":                   "Compétences",
   "/locations":                "Localisations",
   "/site-en-ligne":            "Site en ligne",
@@ -179,6 +182,8 @@ const PUBLIC_ROUTES = new Set([
   "/cpf-positioning",
   "/code-page",
   "/login-page",
+  "/register-student",
+  "/register",
 ]);
 
 const SECRETARY_DASHBOARD_SESSION_KEY = "permiFastSecretaryDashboardActive";
@@ -474,6 +479,8 @@ useEffect(() => {
           <Route path="/cpf-positioning" element={<CPFPositioningPage />} />
           <Route path="/code-page"     element={<PW_CodePage />} />
           <Route path="/login-page"    element={<PW_LoginPage />} />
+          <Route path="/register-student" element={<RegisterStudentForm />} />
+          <Route path="/register"      element={<RegisterStudentForm />} />
         </Routes>
         <PW_CartDrawer />
         <PW_FloatingContactButton />
@@ -607,6 +614,18 @@ useEffect(() => {
                 <button
                   type="button"
                   className="header-quick-action"
+                  onClick={() => navigate("/admin/documents")}
+                  title="Documents"
+                  aria-label="Ouvrir les documents des élèves"
+                >
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                    <path d="M14 2v6h6M8 13h8M8 17h6" />
+                  </svg>
+                </button>
+                <button
+                  type="button"
+                  className="header-quick-action"
                   onClick={() => navigate("/message/clients")}
                   title="Notifications"
                   aria-label="Ouvrir les notifications clients"
@@ -728,6 +747,7 @@ useEffect(() => {
                 <Route path="/candidates"    element={<Candidates selectedSchoolId={selectedSchoolId} />} />
                 <Route path="/candidate-info/:id"          element={<Info />} />
                 <Route path="/candidateform" element={<CandidateForm />} />
+                <Route path="/admin/documents" element={<AdminDocumentsPage />} />
 
                 {/* ── Monitors ── */}
                 <Route path="/monitors"      element={<Monitors selectedSchoolId={selectedSchoolId} /> } />
